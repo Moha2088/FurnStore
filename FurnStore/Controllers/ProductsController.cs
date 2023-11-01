@@ -22,6 +22,8 @@ namespace FurnStore.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
+            ViewData["ProductCount"] = _context.Product.Count();
+            
               return _context.Product != null ? 
                           View(await _context.Product.ToListAsync()) :
                           Problem("Entity set 'FurnStoreContext.Product'  is null.");

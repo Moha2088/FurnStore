@@ -13,7 +13,7 @@ namespace FurnStore.Models
               serviceProvider.GetRequiredService<
                   DbContextOptions<FurnStoreContext>>()))
             {
-                if (context.Product.Any())
+                if (!context.Product.Any())
                 {
                     context.Product.AddRange(
                         new Product
@@ -82,7 +82,7 @@ namespace FurnStore.Models
             {
                 IdentityUser adminUser = SeedUser(context, "admin@furnstore.com", "Admin");
                 adminRole = new IdentityUserRole<string> { RoleId = admin.Id, UserId = adminUser.Id };
-                context.Add(adminRole);
+                context.Add(adminRole); 
             }
         }
 

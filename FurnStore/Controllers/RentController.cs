@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Collections.Immutable;
+using System.Security.Claims;
 using FurnStore.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,11 +15,19 @@ namespace FurnStore.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var product = await _context.Product
+                .Where(p => p.Rentee == null)
+                .ToListAsync();
+
+            ViewData["ProductCount"] = product.Count();
+          
+           return View(product);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Rent(int? id)
         {
             if (id == null)
@@ -40,6 +49,8 @@ namespace FurnStore.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> CancelRent(int? id)
         {
             if (id == null)
@@ -62,7 +73,19 @@ namespace FurnStore.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(RentedProducts));
+        }
+        
+        public async Task<IActionResult> RentedProducts()
+        {
+            string userid = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var product = await _context.Product
+                .Where(p => p.Rentee == userid)
+                .ToListAsync();
+
+            ViewData["ProductCount"] = product.Count();
+            return View(product);
         }
     }
 }

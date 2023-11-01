@@ -16,3 +16,4 @@
 *.CopyComplete
 *.txt
 *.editorconfig
+*.BuildWithSkipAnalyzers

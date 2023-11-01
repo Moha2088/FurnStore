@@ -1,21 +1,21 @@
-@using Microsoft.AspNetCore.Identity
 @model IEnumerable<FurnStore.Models.Product>
 
 <div class="text-center">
-    <h1 style="margin-bottom:2%;">Rent Product</h1>
+    <h1 style="margin-bottom:2%;">Rented Products</h1>
 
     @if (!Model.Any())
     {
-        <p style="margin-bottom:10% ;">No products available for renting at the moment. Products will be restocked shortly!</p>
+        <p style="margin-bottom:10% ;">You have no rented products. Rent some here: <a href="https://localhost:44321/Rent">
+            <button class="btn btn-outline-dark">Rent</button>
+        </a></p>
     }
 
     else
     {
         <p style="margin-bottom:10% ;">Products: @ViewData["ProductCount"]</p>
     }
-
-    <table class="table-hover table-borderless">
-
+  
+    <table class="table table-borderless table-hover">
         <thead>
         <tr>
             <th>
@@ -33,15 +33,13 @@
             <th>
                 @Html.DisplayNameFor(item => item.Price)
             </th>
-
         </tr>
         </thead>
-
         <tbody>
 
         @if (Model != null)
         {
-            @foreach (var item in Model)
+            foreach (var item in Model)
             {
                 <tr>
                     <td>
@@ -60,24 +58,11 @@
                         @Html.DisplayFor(modelItem => item.Price)
                     </td>
 
-                    @{
-                        if (User.Identity.IsAuthenticated)
-                        {
-                            <td>
-                                <form asp-action="Rent" asp-route-id="@item.Id" method="post">
-                                    <button type="submit" class="btn btn-outline-dark">Rent</button>
-                                </form>
-                            </td>
-                        }
-
-                        else
-                        {
-                            <td style="margin-left: 1000px;">
-                                <b>- Log in to rent this product</b>
-                            </td>
-                        }
-                    }
-
+                    <td>
+                        <form asp-action="CancelRent" asp-route-id="@item.Id" method="post">
+                            <button type="submit" class="btn btn-outline-danger">Cancel Renting</button>
+                        </form>
+                    </td>
 
                     <td>
                         <img style="width: 100px; margin-left: 100px;" src="Images/Question_mark_(black).svg.png"/>
