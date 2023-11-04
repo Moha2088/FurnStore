@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using System.Security.Claims;
 using FurnStore.Data;
+using FurnStore.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -79,13 +80,18 @@ namespace FurnStore.Controllers
         public async Task<IActionResult> RentedProducts()
         {
             string userid = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
+    
             var product = await _context.Product
                 .Where(p => p.Rentee == userid)
                 .ToListAsync();
 
+            var priceSum = product
+                .Select(p => p.Price)
+                .Sum();
+
+            ViewData["Sum"] = priceSum;
             ViewData["ProductCount"] = product.Count();
             return View(product);
-        }
+        }   
     }
 }

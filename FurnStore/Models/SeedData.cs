@@ -51,7 +51,7 @@ namespace FurnStore.Models
                              new Product
                              {
                                  Name = "Wooden Analog Clock",
-                                 Description = "A wooden clock in analog form designed for living Rooms and open spaces",
+                                 Description = "A wooden clock in analog form designed for living rooms and open spaces",
                                  Material = "Wood",
                                  Price = 600
                              }

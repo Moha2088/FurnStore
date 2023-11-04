@@ -1,8 +1,12 @@
 @using Microsoft.AspNetCore.Identity
 @model IEnumerable<FurnStore.Models.Product>
 
+@{
+    ViewData["Title"] = "Rent product";
+}
+
 <div class="text-center">
-    <h1 style="margin-bottom:2%;">Rent Product</h1>
+    <h1 style="margin-bottom:2%; margin-top:3%;">Rent Product</h1>
 
     @if (!Model.Any())
     {
@@ -14,7 +18,7 @@
         <p style="margin-bottom:10% ;">Products: @ViewData["ProductCount"]</p>
     }
 
-    <table class="table-hover table-borderless">
+    <table class="table table-hover table-borderless">
 
         <thead>
         <tr>
@@ -78,9 +82,8 @@
                         }
                     }
 
-
                     <td>
-                        <img style="width: 100px; margin-left: 100px;" src="Images/Question_mark_(black).svg.png"/>
+                        <img style="width: 400px; margin-left: 100px;" src="/Images/photo-1533090161767-e6ffed986c88.png"/>
                     </td>
                 </tr>
             }

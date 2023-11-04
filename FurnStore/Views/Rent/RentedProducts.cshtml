@@ -1,21 +1,30 @@
+@using System.Collections
 @model IEnumerable<FurnStore.Models.Product>
 
+
+@{
+    ViewData["Title"] = "Rented products";
+}
+
 <div class="text-center">
-    <h1 style="margin-bottom:2%;">Rented Products</h1>
+    <h1 style="margin-bottom:2%; margin-top:3%;">Rented Products</h1>
 
     @if (!Model.Any())
     {
-        <p style="margin-bottom:10% ;">You have no rented products. Rent some here: <a href="https://localhost:44321/Rent">
-            <button class="btn btn-outline-dark">Rent</button>
-        </a></p>
+        <p style="margin-bottom:10% ;">
+            You have no rented products. Rent some here:
+            <a href="http://localhost:5227/Rent">
+                <button class="btn btn-outline-dark">Rent</button>
+            </a>
+        </p>
     }
 
     else
     {
         <p style="margin-bottom:10% ;">Products: @ViewData["ProductCount"]</p>
     }
-  
-    <table class="table table-borderless table-hover">
+
+    <table class="table table-borderless table-hover" style="margin-bottom: 300px;">
         <thead>
         <tr>
             <th>
@@ -65,7 +74,7 @@
                     </td>
 
                     <td>
-                        <img style="width: 100px; margin-left: 100px;" src="Images/Question_mark_(black).svg.png"/>
+                        <img style="width: 400px; margin-left: 100px;" src="/Images/photo-1533090161767-e6ffed986c88.png"/>
                     </td>
                 </tr>
             }
@@ -74,4 +83,26 @@
         </tbody>
 
     </table>
+
+    <h1 style="margin-bottom: 50px;">Checkout</h1>
+
+    <div class="container" style="background-color:rgb(235, 235, 235); width: 600px; border-bottom-left-radius: 30px 30px; border-bottom-right-radius: 30px 30px; border-top-right-radius:30px 30px; border-top-left-radius: 30px 30px;">
+        <br>
+        <div>
+
+            @if (Model is not null)
+            {
+                int count = 1;
+                foreach (var item in Model)
+                {
+                    <p>@count - @Html.DisplayFor(p => item.Price)</p>
+                    count++;
+                }
+            }
+
+        </div>
+        <hr/>
+        <p>Total: <b>@ViewData["Sum"]</b></p>
+    <br>
+        </div>
 </div>

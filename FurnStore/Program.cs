@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using FurnStore.Data;
 using FurnStore.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 public class Program
 {
@@ -25,7 +26,7 @@ public class Program
 
             SeedData.Initialize(services);
         }
-        
+
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
         {
@@ -48,6 +49,5 @@ public class Program
 
         app.MapRazorPages();
         app.Run();
-
     }
 }
