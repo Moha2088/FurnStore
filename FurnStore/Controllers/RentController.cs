@@ -23,8 +23,8 @@ namespace FurnStore.Controllers
                 .ToListAsync();
 
             ViewData["ProductCount"] = product.Count();
-          
-           return View(product);
+
+            return View(product);
         }
 
         [HttpPost]
@@ -76,11 +76,11 @@ namespace FurnStore.Controllers
 
             return RedirectToAction(nameof(RentedProducts));
         }
-        
+
         public async Task<IActionResult> RentedProducts()
         {
             string userid = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-    
+
             var product = await _context.Product
                 .Where(p => p.Rentee == userid)
                 .ToListAsync();
@@ -92,6 +92,27 @@ namespace FurnStore.Controllers
             ViewData["Sum"] = priceSum;
             ViewData["ProductCount"] = product.Count();
             return View(product);
-        }   
+        }
+    
+        [HttpPost]
+        public async Task<IActionResult> ClearList()
+        {
+            string userid = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var productsToRemove = await _context.Product
+                .Where(p => p.Rentee == userid)
+                .ToListAsync();
+
+            if (productsToRemove is not null)
+            {
+                foreach (var product in productsToRemove)
+                {
+                    product.Rentee = null;
+                    await _context.SaveChangesAsync();
+                }
+            }
+
+            return RedirectToAction(nameof(RentedProducts));
+        }
     }
 }
