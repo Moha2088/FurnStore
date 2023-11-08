@@ -24,9 +24,16 @@
         <p style="margin-bottom:10% ;">Products: @ViewData["ProductCount"]</p>
         
         <form asp-action="ClearList" method="post">
-            <button type="submit" class="btn btn-outline-secondary">Clear List</button>
+            <button type="submit" onclick="ClearAlert()" class="btn btn-outline-secondary">Clear List</button>
         </form>
     }
+
+<script>
+    function ClearAlert() {
+        alert('List have been cleared');
+        
+        }
+</script>
 
     <table class="table table-borderless table-hover" style="margin-bottom: 300px;">
         <thead>
@@ -78,7 +85,7 @@
                         </td>       
 
                         <td>
-                            <img style="width: 400px; margin-left: 100px;" src="/Images/photo-1533090161767-e6ffed986c88.png" />
+                            <img style="width: 400px; margin-left: 100px;" src="@Html.DisplayFor(modelItem => item.ImageUrl)" />
                         </td>
                     </tr>
                 }
@@ -100,14 +107,14 @@
                 int count = 1;
                 foreach (var item in Model)
                 {
-                    <p>@count - @Html.DisplayFor(p => item.Price)</p>
+                    <p>@count - @Html.DisplayFor(p => item.Price) kr.</p>
                     count++;
                 }
             }
 
         </div>
         <hr />
-        <p>Total: <b>@ViewData["Sum"]</b></p>
+        <p>Total: <b>@ViewData["Sum"] kr.</b></p>
         <br>
     </div>
 </div>

@@ -21,7 +21,8 @@ namespace FurnStore.Models
                             Name = "White Office Chair",
                             Material = "Wood",
                             Description = "White Chair perfect for office environments or for the dining table ",
-                            Price = 900
+                            Price = 900,
+                            ImageUrl = "https://images.unsplash.com/photo-1517705008128-361805f42e86?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTk5fHxtaW5pbWFsJTIwZnVybml0dXJlfGVufDB8fDB8fHww"
                         },
 
                          new Product
@@ -29,7 +30,8 @@ namespace FurnStore.Models
                              Name = "Black & Brown Leather Sofa ",
                              Description = "Black and Brown Leather Sofa which is padded for maximum comfort",
                              Material = "Leather",
-                             Price = 3500
+                             Price = 3500,
+                             ImageUrl="https://images.unsplash.com/photo-1567016376408-0226e4d0c1ea?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                          },
 
                            new Product
@@ -37,7 +39,8 @@ namespace FurnStore.Models
                                Name = "Rounded Wooden Table",
                                Description = "Rounded table with dark bottom",
                                Material = "Wood",
-                               Price = 1700
+                               Price = 1700,
+                               ImageUrl="https://images.unsplash.com/photo-1544457070-4cd773b4d71e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nzh8fG1pbmltYWwlMjBmdXJuaXR1cmV8ZW58MHx8MHx8fDA%3D"
                            },
 
                              new Product
@@ -45,7 +48,8 @@ namespace FurnStore.Models
                                  Name = "Wooden Nightstand",
                                  Description = "Nightstand made specifically for the bedroom",
                                  Material = "Wood",
-                                 Price = 1200
+                                 Price = 1200,
+                                 ImageUrl="https://images.unsplash.com/photo-1462530260150-162092dbf011?q=80&w=1986&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                              },
 
                              new Product
@@ -53,7 +57,8 @@ namespace FurnStore.Models
                                  Name = "Wooden Analog Clock",
                                  Description = "A wooden clock in analog form designed for living rooms and open spaces",
                                  Material = "Wood",
-                                 Price = 600
+                                 Price = 600,
+                                 ImageUrl="https://images.unsplash.com/photo-1533090161767-e6ffed986c88?q=80&w=1738&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                              }
                     );
                 }

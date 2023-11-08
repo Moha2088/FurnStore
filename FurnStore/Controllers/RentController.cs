@@ -3,6 +3,7 @@ using System.Security.Claims;
 using FurnStore.Data;
 using FurnStore.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.EntityFrameworkCore;
 
 namespace FurnStore.Controllers
@@ -20,6 +21,7 @@ namespace FurnStore.Controllers
         {
             var product = await _context.Product
                 .Where(p => p.Rentee == null)
+                .AsNoTracking()
                 .ToListAsync();
 
             ViewData["ProductCount"] = product.Count();
@@ -83,6 +85,7 @@ namespace FurnStore.Controllers
 
             var product = await _context.Product
                 .Where(p => p.Rentee == userid)
+                .AsNoTracking()
                 .ToListAsync();
 
             var priceSum = product
@@ -112,6 +115,7 @@ namespace FurnStore.Controllers
                 }
             }
 
+            ViewData["ClearedAlert"] = "List has been cleared";
             return RedirectToAction(nameof(RentedProducts));
         }
     }

@@ -17,3 +17,9 @@
 *.txt
 *.editorconfig
 *.BuildWithSkipAnalyzers
+*.exe
+FurnStore/.vs/FurnStore/v17/.suo
+*.exe
+*.targets
+*.exe
+FurnStore/.vs/FurnStore/v17/.suo
