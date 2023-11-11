@@ -1,9 +1,6 @@
-﻿using System.Collections.Immutable;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using FurnStore.Data;
-using FurnStore.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.EntityFrameworkCore;
 
 namespace FurnStore.Controllers
@@ -46,8 +43,10 @@ namespace FurnStore.Controllers
             }
 
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            string userEmail = User.FindFirst(ClaimTypes.Name).Value;
 
             product.Rentee = userId;
+            product.RenteeEmail = userEmail;
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -73,6 +72,7 @@ namespace FurnStore.Controllers
             if (product.Rentee == userid)
             {
                 product.Rentee = null;
+                product.RenteeEmail = null;
                 await _context.SaveChangesAsync();
             }
 

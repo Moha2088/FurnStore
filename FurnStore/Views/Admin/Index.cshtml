@@ -1,6 +1,70 @@
+@using Microsoft.AspNetCore.Identity
 @model IEnumerable<FurnStore.Models.Product>
 
-
 <div class="text-center">
-      <h1>Products: @ViewData["ProductCount"]</h1>
+    <h1 style="margin-bottom:2%;">DashBoard</h1>
+    <p style="margin-bottom:10%;">Products rented: @ViewData["RentCount"]</p>
+
+    <table class="table table-borderless table-hover">
+        <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(item => item.Name)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(item => item.Description)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(item => item.Material)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(item => item.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(item => item.Rentee)
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Material)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RenteeEmail)
+                    </td>
+
+                    <td>
+                        <img style="width: 400px; margin-left: 100px;"
+                             src="@Html.DisplayFor(modelItem => item.ImageUrl)"/>
+                    </td>
+                </tr>
+            }
+        }
+
+        </tbody>
+
+    </table>
+
 </div>

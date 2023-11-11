@@ -15,5 +15,7 @@
         public string ImageUrl { get; set; } = null!; 
         
         public string? Rentee { get; set; }
+
+        public string? RenteeEmail { get; set; }
     }
 }

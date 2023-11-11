@@ -1,5 +1,7 @@
+using System.Security.Claims;
 using FurnStore.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FurnStore.Controllers;
 
@@ -11,12 +13,16 @@ public class AdminController : Controller
     {
         _context = context;
     }
-    
+
     // GET
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        ViewData["ProductCount"] = _context.Product.Count();
-            
-        return View();
+        var product = await _context.Product
+        .Where(x => x.Rentee != null)
+        .AsNoTracking()
+        .ToListAsync();
+        
+        ViewData["RentCount"] = product.Count;
+        return View(product);
     }
 }

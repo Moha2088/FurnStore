@@ -27,7 +27,7 @@
             <button type="submit" onclick="ClearAlert()" class="btn btn-outline-secondary">Clear List</button>
         </form>
     }
-
+    
 <script>
     function ClearAlert() {
         alert('List have been cleared');
@@ -53,6 +53,8 @@
                 <th>
                     @Html.DisplayNameFor(item => item.Price)
                 </th>
+                <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -98,7 +100,7 @@
     <h1 style="margin-bottom: 50px;">Checkout</h1>
 
     <div class="container"
-        style="background-color:rgb(235, 235, 235); width: 600px; border-bottom-left-radius: 30px 30px; border-bottom-right-radius: 30px 30px; border-top-right-radius:30px 30px; border-top-left-radius: 30px 30px;">
+         style="background-color:rgb(235, 235, 235); width: 600px; border-bottom-left-radius: 30px 30px; border-bottom-right-radius: 30px 30px; border-top-right-radius:30px 30px; border-top-left-radius: 30px 30px;">
         <br>
         <div>
 
@@ -117,4 +119,12 @@
         <p>Total: <b>@ViewData["Sum"] kr.</b></p>
         <br>
     </div>
-</div>
+    
+ <script>
+    const totop = () => window.scrollTo(0,0)
+    </script>
+    
+    <button style="margin-top:5%;" class="btn btn-outline-dark" onclick="totop()">
+        Back to top
+    </button>
+    </div>
