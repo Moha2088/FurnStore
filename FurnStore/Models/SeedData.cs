@@ -22,7 +22,8 @@ namespace FurnStore.Models
                             Material = "Wood",
                             Description = "White Chair perfect for office environments or for the dining table ",
                             Price = 900,
-                            ImageUrl = "https://images.unsplash.com/photo-1517705008128-361805f42e86?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTk5fHxtaW5pbWFsJTIwZnVybml0dXJlfGVufDB8fDB8fHww"
+                            ImageUrl = "https://images.unsplash.com/photo-1517705008128-361805f42e86?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTk5fHxtaW5pbWFsJTIwZnVybml0dXJlfGVufDB8fDB8fHww",
+                            ShippingPrice = 30                        
                         },
 
                          new Product
@@ -31,7 +32,8 @@ namespace FurnStore.Models
                              Description = "Black and Brown Leather Sofa which is padded for maximum comfort",
                              Material = "Leather",
                              Price = 3500,
-                             ImageUrl = "https://images.unsplash.com/photo-1567016376408-0226e4d0c1ea?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                             ImageUrl = "https://images.unsplash.com/photo-1567016376408-0226e4d0c1ea?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                             ShippingPrice = 30
                          },
 
                            new Product
@@ -41,6 +43,7 @@ namespace FurnStore.Models
                                Material = "Wood",
                                Price = 1700,
                                ImageUrl = "https://images.unsplash.com/photo-1544457070-4cd773b4d71e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nzh8fG1pbmltYWwlMjBmdXJuaXR1cmV8ZW58MHx8MHx8fDA%3D"
+                               ,ShippingPrice = 30
                            },
 
                              new Product
@@ -50,6 +53,7 @@ namespace FurnStore.Models
                                  Material = "Wood",
                                  Price = 1200,
                                  ImageUrl = "https://images.unsplash.com/photo-1462530260150-162092dbf011?q=80&w=1986&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                 ,ShippingPrice = 30
                              },
 
                              new Product
@@ -59,6 +63,7 @@ namespace FurnStore.Models
                                  Material = "Wood",
                                  Price = 600,
                                  ImageUrl = "https://images.unsplash.com/photo-1533090161767-e6ffed986c88?q=80&w=1738&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                 ,ShippingPrice = 30
                              },
 
                              new Product
@@ -68,6 +73,7 @@ namespace FurnStore.Models
                                  Material = "Straw",
                                  Price = 450,
                                  ImageUrl = "https://plus.unsplash.com/premium_photo-1668073437554-b48d66e9f368?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                 ,ShippingPrice = 30
                              },
 
                                 new Product
@@ -77,6 +83,7 @@ namespace FurnStore.Models
                                     Material = "Wood",
                                     Price = 350,
                                     ImageUrl = "https://images.unsplash.com/photo-1534532335525-79868382477e?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjN8fFdvb2QlMjBmdXJuaXR1cmV8ZW58MHx8MHx8fDA%3D"
+                                     ,ShippingPrice = 30
                                 },
 
                                 new Product
@@ -86,6 +93,7 @@ namespace FurnStore.Models
                                     Material = "Clay",
                                     Price = 600,
                                     ImageUrl = "https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                     ,ShippingPrice = 30
                                 }
                     );
                 }

@@ -92,8 +92,17 @@ namespace FurnStore.Controllers
                 .Select(p => p.Price)
                 .Sum();
 
-            ViewData["Sum"] = priceSum;
+            var shippingPrice = product
+                .Select(p => p.ShippingPrice)
+                .Distinct()
+                .Sum();
+
+            var totalPrice = shippingPrice + priceSum;
+
+            ViewData["PriceSum"] = priceSum;
             ViewData["ProductCount"] = product.Count();
+            ViewData["ShippingPrice"] = shippingPrice;
+            ViewData["TotalPrice"] = totalPrice;
             return View(product);
         }
     

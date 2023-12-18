@@ -4,6 +4,7 @@ using FurnStore.Data;
 using FurnStore.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using FurnStore.Middleware;
 
 public class Program
 {
@@ -31,6 +32,8 @@ public class Program
         if (!app.Environment.IsDevelopment())
         {
             app.UseExceptionHandler("/Home/Error");
+            app.UseNotFound();
+
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
