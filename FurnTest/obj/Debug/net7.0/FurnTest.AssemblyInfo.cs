@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FurnTest")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+aab4d54590f8dd99f30b7c28f0bed8627afd8eae")]
 [assembly: System.Reflection.AssemblyProductAttribute("FurnTest")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FurnTest")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

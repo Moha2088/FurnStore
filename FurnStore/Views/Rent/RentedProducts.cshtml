@@ -22,18 +22,18 @@
     else
     {
         <p style="margin-bottom:10% ;">Products: @ViewData["ProductCount"]</p>
-        
+
         <form asp-action="ClearList" method="post">
             <button type="submit" onclick="ClearAlert()" class="btn btn-outline-secondary">Clear List</button>
         </form>
     }
-    
-<script>
-    function ClearAlert() {
-        alert('List have been cleared');
-        
+
+    <script>
+        function ClearAlert() {
+            alert('List have been cleared');
+
         }
-</script>
+    </script>
 
     <table class="table table-borderless table-hover" style="margin-bottom: 300px;">
         <thead>
@@ -84,7 +84,7 @@
                             <form asp-action="CancelRent" asp-route-id="@item.Id" method="post">
                                 <button type="submit" class="btn btn-outline-danger">Cancel Renting</button>
                             </form>
-                        </td>       
+                        </td>
 
                         <td>
                             <img style="width: 400px; margin-left: 100px;" src="@Html.DisplayFor(modelItem => item.ImageUrl)" />
@@ -96,11 +96,11 @@
         </tbody>
 
     </table>
-    
+
     <h1 style="margin-bottom: 50px;">Checkout</h1>
 
     <div class="container"
-         style="background-color:rgb(235, 235, 235); width: 600px; border-bottom-left-radius: 30px 30px; border-bottom-right-radius: 30px 30px; border-top-right-radius:30px 30px; border-top-left-radius: 30px 30px;">
+         style="background-color:rgb(245, 245, 245); width: 600px; border-bottom-left-radius: 30px 30px; border-bottom-right-radius: 30px 30px; border-top-right-radius:30px 30px; border-top-left-radius: 30px 30px;">
         <br>
         <div>
 
@@ -116,15 +116,27 @@
 
         </div>
         <hr />
-        <p>Total: <b>@ViewData["Sum"] kr.</b></p>
+
+        @if (ViewData["ProductCount"] is > 0)
+        {
+            <p>Shipping price: @ViewData["ShippingPrice"]</p>
+            <hr />
+            <p>Total price: @ViewData["TotalPrice"]</p>
+        }
+
+        else
+        {
+            <p>Total price: @ViewData["PriceSum"]</p>
+        }
+
         <br>
     </div>
-    
- <script>
-    const totop = () => window.scrollTo(0,0)
+
+    <script>
+        const totop = () => window.scrollTo(0, 0)
     </script>
-    
+
     <button style="margin-top:5%;" class="btn btn-outline-dark" onclick="totop()">
         Back to top
     </button>
-    </div>
+</div>

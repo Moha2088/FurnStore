@@ -17,5 +17,7 @@
         public string? Rentee { get; set; }
 
         public string? RenteeEmail { get; set; }
+
+        public decimal ShippingPrice { get; set; }
     }
 }

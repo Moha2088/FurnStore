@@ -55,9 +55,12 @@ namespace FurnStore.Migrations
                     b.Property<string>("RenteeEmail")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("ShippingPrice")
+                        .HasColumnType("decimal(18,2)");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Product");
+                    b.ToTable("Product", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
