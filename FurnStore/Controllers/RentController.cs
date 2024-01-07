@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using FurnStore.Data;
+using FurnStore.Migrations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -81,8 +82,8 @@ namespace FurnStore.Controllers
 
         public async Task<IActionResult> RentedProducts()
         {
-            string userid = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
+            string? userid = User.Identity.IsAuthenticated ? User.FindFirst(ClaimTypes.NameIdentifier)?.Value : null;
+            
             var product = await _context.Product
                 .Where(p => p.Rentee == userid)
                 .AsNoTracking()
@@ -92,7 +93,7 @@ namespace FurnStore.Controllers
                 .Select(p => p.Price)
                 .Sum();
 
-            var shippingPrice = product
+            var shippingPrice = product 
                 .Select(p => p.ShippingPrice)
                 .Distinct()
                 .Sum();

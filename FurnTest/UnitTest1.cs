@@ -4,6 +4,8 @@ using FurnStore.Models;
 using FurnStore.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using FluentAssertions;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace FurnStore;
 
@@ -35,4 +37,18 @@ public class UnitTest1 : TestBase
         // Assert
         result.Should().BeOfType<ViewResult>();
     }
+
+    // [TestMethod]
+    // public async Task RentedProducts_Should_Return_View_WithRentedProducts()
+    // {
+    //     // Arrange
+    //     var context = GetContext();
+    //     var controllerResult = new RentController(context);
+    //     // Act
+    //     var result = (ViewResult) await controllerResult.RentedProducts();
+    //
+    //     // Assert
+    //     result.Should().BeOfType<ViewResult>().Which.ContentType.Should().BeOfType<List<Product>>();
+    //
+    // }
 }
