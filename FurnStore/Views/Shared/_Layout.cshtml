@@ -31,8 +31,12 @@
                             <a class="nav-link" asp-area="" asp-controller="Rent" asp-action="Index">Rent</a>
                         </li>
 
-                        @if (User.Identity.IsAuthenticated)
+                        @if (SignInManager.IsSignedIn(User))
                         {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Products" asp-action="Create">Create Boards</a>
+                            </li>
+                            
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Rent" asp-action="RentedProducts">My Products</a>
                             </li>
