@@ -5,6 +5,7 @@ using FurnStore.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using FurnStore.Middleware;
+using QuestPDF.Infrastructure;
 
 public class Program
 {
@@ -18,9 +19,10 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
-
+        QuestPDF.Settings.License = LicenseType.Community;
+        
         var app = builder.Build();
-
+    
         using (var scope = app.Services.CreateScope())
         {
             var services = scope.ServiceProvider;
