@@ -23,7 +23,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.9" />
-    <PackageReference Include="QuestPDF" Version="2023.12.3" />
+    <PackageReference Include="QuestPDF" Version="2023.12.4" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="2.88.7" />
   </ItemGroup>
 
 </Project>

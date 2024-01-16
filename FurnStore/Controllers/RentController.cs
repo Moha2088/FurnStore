@@ -136,20 +136,19 @@ namespace FurnStore.Controllers
 
         public async Task<IActionResult> GenPdf()
         {
-            Document.Create(container =>
+            var document = Document.Create(container =>
             {
                 container.Page(page =>
                 {
                     page.Size(PageSizes.A4);
                     page.Margin(2, Unit.Centimetre);
                     page.PageColor(Colors.White);
-                    page.DefaultTextStyle(x => x.FontSize(20));
-                    
+                    page.DefaultTextStyle(x => x.FontSize(12));
+
                     page.Header()
-                        .Text($"Order Summary/Confirmation #{DateTime.Now}")
-                        .SemiBold()
-                        .FontSize(30)
-                        .FontColor(Colors.Black);
+                        .AlignLeft()
+                        .Width(PageSizes.A10.Width)
+                        .Image("wwwroot/Images/FurnLogo.png");
 
                     page.Content()
                         .PaddingVertical(1, Unit.Centimetre)
@@ -157,19 +156,22 @@ namespace FurnStore.Controllers
                         {
                             x.Spacing(40);
 
+                            x.Item().Text($"Order Summary/Confirmation #{DateTime.Now}")
+                                .SemiBold()
+                                .FontSize(22)
+                                .FontColor(Colors.Black);
+
                             x.Item()
                                 .Text("Thank you for confirming your order. Below is a list of your ordered products:")
                                 .FontSize(14);
-                            
-                                
+
+
                             x.Item()
                                 .Text("Product 1 : Chair") // Placeholder
-                                .FontSize(12)
                                 .Bold();
 
                             x.Item()
                                 .Text("Product 2 : Table") // Placeholder
-                                .FontSize(12)
                                 .Bold();
                         });
 
@@ -177,13 +179,14 @@ namespace FurnStore.Controllers
                         .AlignCenter()
                         .Text(x =>
                         {
-                            x.Span($"page ");
+                            x.Span($"Page ");
                             x.CurrentPageNumber();
                         });
                 });
-                
-            }).GeneratePdfAndShow();
-
+            });
+            
+            document.GeneratePdfAndShow();
+            
             return RedirectToAction(nameof(RentedProducts));
         }
     }
