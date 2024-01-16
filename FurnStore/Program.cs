@@ -5,6 +5,7 @@ using FurnStore.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using FurnStore.Middleware;
+using QuestPDF.Infrastructure;
 
 public class Program
 {
@@ -14,13 +15,15 @@ public class Program
         builder.Services.AddDbContext<FurnStoreContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("FurnStoreContext") ?? throw new InvalidOperationException("Connection string 'FurnStoreContext' not found.")));
 
-        builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<FurnStoreContext>();
+        builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            .AddRoles<IdentityRole>().AddEntityFrameworkStores<FurnStoreContext>();
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
-
+        QuestPDF.Settings.License = LicenseType.Community;
+        
         var app = builder.Build();
-
+    
         using (var scope = app.Services.CreateScope())
         {
             var services = scope.ServiceProvider;

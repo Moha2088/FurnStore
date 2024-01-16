@@ -1,8 +1,13 @@
 ﻿using System.Security.Claims;
 using FurnStore.Data;
 using FurnStore.Migrations;
+using FurnStore.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
+using QuestPDF.Previewer;
 
 namespace FurnStore.Controllers
 {
@@ -83,7 +88,7 @@ namespace FurnStore.Controllers
         public async Task<IActionResult> RentedProducts()
         {
             string? userid = User.Identity.IsAuthenticated ? User.FindFirst(ClaimTypes.NameIdentifier)?.Value : null;
-            
+
             var product = await _context.Product
                 .Where(p => p.Rentee == userid)
                 .AsNoTracking()
@@ -93,7 +98,7 @@ namespace FurnStore.Controllers
                 .Select(p => p.Price)
                 .Sum();
 
-            var shippingPrice = product 
+            var shippingPrice = product
                 .Select(p => p.ShippingPrice)
                 .Distinct()
                 .Sum();
@@ -106,7 +111,7 @@ namespace FurnStore.Controllers
             ViewData["TotalPrice"] = totalPrice;
             return View(product);
         }
-    
+
         [HttpPost]
         public async Task<IActionResult> ClearList()
         {
@@ -126,6 +131,62 @@ namespace FurnStore.Controllers
             }
 
             ViewData["ClearedAlert"] = "List has been cleared";
+            return RedirectToAction(nameof(RentedProducts));
+        }
+
+        public async Task<IActionResult> GenPdf()
+        {
+            var document = Document.Create(container =>
+            {
+                container.Page(page =>
+                {
+                    page.Size(PageSizes.A4);
+                    page.Margin(2, Unit.Centimetre);
+                    page.PageColor(Colors.White);
+                    page.DefaultTextStyle(x => x.FontSize(12));
+
+                    page.Header()
+                        .AlignLeft()
+                        .Width(PageSizes.A10.Width)
+                        .Image("wwwroot/Images/FurnLogo.png");
+
+                    page.Content()
+                        .PaddingVertical(1, Unit.Centimetre)
+                        .Column(x =>
+                        {
+                            x.Spacing(40);
+
+                            x.Item().Text($"Order Summary/Confirmation #{DateTime.Now}")
+                                .SemiBold()
+                                .FontSize(22)
+                                .FontColor(Colors.Black);
+
+                            x.Item()
+                                .Text("Thank you for confirming your order. Below is a list of your ordered products:")
+                                .FontSize(14);
+
+
+                            x.Item()
+                                .Text("Product 1 : Chair") // Placeholder
+                                .Bold();
+
+                            x.Item()
+                                .Text("Product 2 : Table") // Placeholder
+                                .Bold();
+                        });
+
+                    page.Footer()
+                        .AlignCenter()
+                        .Text(x =>
+                        {
+                            x.Span($"Page ");
+                            x.CurrentPageNumber();
+                        });
+                });
+            });
+            
+            document.GeneratePdfAndShow();
+            
             return RedirectToAction(nameof(RentedProducts));
         }
     }
