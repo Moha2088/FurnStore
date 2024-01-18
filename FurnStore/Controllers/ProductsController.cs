@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using FurnStore.Data;
 using FurnStore.Models;
 using Microsoft.AspNetCore.Authorization;
+using ScottPlot;
 
 namespace FurnStore.Controllers
 {
@@ -20,10 +21,44 @@ namespace FurnStore.Controllers
         public async Task<IActionResult> Index()
         {
             ViewData["ProductCount"] = _context.Product.Count();
+
+            return _context.Product != null ?
+                        View(await _context.Product.ToListAsync()) :
+                        Problem("Entity set 'FurnStoreContext.Product'  is null.");
+        }
+
+        public async Task<IActionResult> Dashboard()
+        {
+            var users = await _context.Users
+                .ToListAsync(); 
+
+            var rented = await _context.Product
+                .Where(x => x.Rentee != null)
+                .ToListAsync();
+
+            var rentedCount = Convert.ToDouble(rented.Count());
+            var totalCount = Convert.ToDouble(_context.Product.Count());
+            var rentedPct = rentedCount / totalCount * 100;
+
+            var barPlot = new Plot();
+            double[] states = {rentedCount, totalCount};
+            barPlot.Add.Bars(states);
+            barPlot.Axes.Margins(bottom: 0);
+
+            Tick[] ticks =
+            {
+                new (0,"Rented"),
+                new (1, "Total"),
+            };
+
+            barPlot.Axes.Bottom.TickGenerator = new ScottPlot.TickGenerators.NumericManual(ticks);
+            barPlot.Axes.Bottom.MajorTickStyle.Length = 0;
             
-              return _context.Product != null ? 
-                          View(await _context.Product.ToListAsync()) :
-                          Problem("Entity set 'FurnStoreContext.Product'  is null.");
+
+            barPlot.SavePng("BarPlot.png", 400, 300);
+            
+            ViewData["RentedPct"] = $"{Math.Round(rentedPct)}%";
+            return View(users);
         }
 
         // GET: Products/Details/5
@@ -149,14 +184,14 @@ namespace FurnStore.Controllers
             {
                 _context.Product.Remove(product);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProductExists(int id)
         {
-          return (_context.Product?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Product?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
