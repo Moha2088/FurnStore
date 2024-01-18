@@ -1,0 +1,38 @@
+@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityUser>
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "_Layout";
+}
+
+<div class="text-center">
+
+<h2 style="margin-top:50px;" >Users</h2>
+<p style="margin-top:20px; margin-bottom: 100px;">Registered users: @Model.Count()</p>
+
+<table style="margin-left: auto; margin-right: auto;">
+    <thead>
+    <tr>
+        <th>Email</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    @if (Model != null)
+    {
+        foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Email</td>
+            </tr>
+        }
+    }
+
+    </tbody>
+</table>
+
+<h2 style="margin-top:100px; margin-bottom:20px;">Statistics</h2>
+<p>Percentage of boards rented: @ViewData["RentedPct"]</p>
+
+    <img src="/../BarPlot.png" alt="Bar Plot"/>
+</div>
