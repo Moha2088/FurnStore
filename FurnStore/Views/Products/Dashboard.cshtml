@@ -7,32 +7,83 @@
 
 <div class="text-center">
 
-<h2 style="margin-top:50px;" >Users</h2>
-<p style="margin-top:20px; margin-bottom: 100px;">Registered users: @Model.Count()</p>
+    <h2 style="margin-top:50px;">Users</h2>
+    <p style="margin-top:20px; margin-bottom: 50px;">Registered users: @Model.Count()</p>
 
-<table style="margin-left: auto; margin-right: auto;">
-    <thead>
-    <tr>
-        <th>Email</th>
-    </tr>
-    </thead>
-    <tbody>
-
-    @if (Model != null)
-    {
-        foreach (var user in Model)
-        {
+    <table class="table table-hover table-borderless" style="margin-left: auto; margin-right: auto;">
+        <thead>
             <tr>
-                <td>@user.Email</td>
+                <th>Email</th>
             </tr>
-        }
+        </thead>
+        <tbody>
+
+            @if (Model != null)
+            {
+                foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.Email</td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+
+    <h2 style="margin-top:200px; margin-bottom:40px;">Statistics</h2>
+
+    @if (Convert.ToInt32(@ViewData["RentedItemsCount"]) >= 5)
+    {
+        <table class="table table-bordered" style=" margin-right: 100px; display: inline-block; width: 50%;">
+            <thead>
+            <tr>
+                <th>
+                    <b>Percentage of boards rented</b>
+                </th>
+
+                <th>
+                    <b>Total sum of rented boards</b>
+                </th>
+
+                <th>
+                    <b>Most popular material</b>
+                </th>
+
+                <th>
+                    <b>Least popular material</b>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    @ViewData["RentedPct"]
+                </td>
+
+                <td>
+                    @ViewData["TotalSum"]
+                </td>
+
+                <td>
+                    <b>@ViewData["MostPopularMat"]</b>
+                </td>
+
+                <td>
+                    <b>@ViewData["LeastPopularMat"]</b>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+
+        <img src="/Images/BarPlot.png" alt="Bar Plot"/>
     }
 
-    </tbody>
-</table>
-
-<h2 style="margin-top:100px; margin-bottom:20px;">Statistics</h2>
-<p>Percentage of boards rented: @ViewData["RentedPct"]</p>
-
-    <img src="/../BarPlot.png" alt="Bar Plot"/>
+    else
+    {
+        <p>To watch the statistics, a minimum of 5 products must be rented</p>
+    }
+    
+   
 </div>

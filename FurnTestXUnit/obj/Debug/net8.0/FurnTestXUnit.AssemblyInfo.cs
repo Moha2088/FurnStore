@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FurnTestXUnit")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3cae825c9e8818823e6df1c6bc4acc36ced402ac")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d5352379a55da355135f42d309d8f22ff86a7c9c")]
 [assembly: System.Reflection.AssemblyProductAttribute("FurnTestXUnit")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FurnTestXUnit")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
