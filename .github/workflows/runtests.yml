@@ -21,8 +21,8 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Restore dependencies
-      run: cd FurnTest && dotnet restore
+      run: cd FurnStore && dotnet restore
     - name: Build
-      run: cd FurnTest && dotnet build --no-restore
+      run: cd FurnStore && dotnet build --no-restore
     - name: Test
-      run: cd FurnTest && dotnet test --no-build --verbosity normal
+      run: cd FurnStore && dotnet test --no-build --verbosity normal

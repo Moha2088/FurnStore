@@ -24,3 +24,6 @@ FurnStore/.vs/FurnStore/v17/.suo
 *.exe
 FurnStore/.vs/FurnStore/v17/.suo
 *.meta
+FurnStore/FurnStore.sln.DotSettings.user
+FurnStore/bin/Debug/net7.0/FurnStore.exe
+*.exe

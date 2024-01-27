@@ -13,7 +13,7 @@
     {
         <p style="margin-bottom:10% ;">
             You have no rented products. Rent some here:
-            <a href="http://localhost:5227/Rent">
+            <a href="https://localhost:44321/Rent/Index/">
                 <button class="btn btn-outline-dark">Rent</button>
             </a>
         </p>
@@ -139,4 +139,9 @@
     <button style="margin-top:5%;" class="btn btn-outline-dark" onclick="totop()">
         Back to top
     </button>
+    <div style="margin-top: 10px;">
+        <button class="btn btn-outline-dark">
+            <a style="text-decoration: none;" href="@Url.Action("GenPdf", "Rent")">Confirm</a>
+        </button>
+        </div>
 </div>

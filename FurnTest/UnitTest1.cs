@@ -39,6 +39,20 @@ public class UnitTest1 : TestBase
     }
 
     // [TestMethod]
+    // public async Task GenPdf_Should_Return_RedirectActionResult_To_RentedProducts()
+    // {
+    //     // Arrange
+    //     using var context = GetContext();
+    //     var controllerResult = new RentController(context);
+    //
+    //     // Act
+    //     var result = (RedirectToActionResult)await controllerResult.GenPdf();
+    //
+    //     // Assert
+    //     result.ActionName.Should().Be(nameof(controllerResult.RentedProducts));
+    // }
+
+    // [TestMethod]
     // public async Task RentedProducts_Should_Return_View_WithRentedProducts()
     // {
     //     // Arrange
