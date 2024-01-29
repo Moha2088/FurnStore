@@ -112,10 +112,20 @@ namespace FurnStore.Controllers
 
         public async Task<List<Product>> GetProducts()
         {
-            string? userid = User.Identity.IsAuthenticated ? User.FindFirst(ClaimTypes.NameIdentifier)?.Value : null;
+            string? userId = null;
+
+            if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                var claim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+                if (claim != null)
+                {
+                    userId = claim.Value;
+                }
+            }
 
             var product = await _context.Product
-                .Where(p => p.Rentee == userid)
+                .Where(p => p.Rentee == userId)
                 .AsNoTracking()
                 .ToListAsync();
 
