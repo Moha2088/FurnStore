@@ -63,7 +63,7 @@ public class ProductControllerTest : TestBase
         var result = (RedirectToActionResult)await controllerResult.Create(product);
 
         // Assert
-        result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Index");
+        result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be(nameof(controllerResult.Index));
     }
 
     [TestMethod]
@@ -78,7 +78,25 @@ public class ProductControllerTest : TestBase
         var result = (RedirectToActionResult)await controllerResult.DeleteConfirmed(1);
 
         // Assert
-        result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Index");
+        result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be(nameof(controllerResult.Index));
     }
 
+//     [TestMethod]
+//     public async Task LuxuryGet_ShouldRedirectToRent()
+//     {
+//         // Arrange
+//         var context = GetContext();
+//         var loggerResult = new Mock<ILogger<ProductsController>>().Object;
+//         var rentLoggerResult = new Mock<ILogger<RentController>>().Object;
+//         var controllerResult = new ProductsController(context, loggerResult);
+//         var rentControllerResult = new RentController(context, rentLoggerResult);
+
+//         // Act
+//         var result = (RedirectToActionResult) await controllerResult.LuxuryGet();
+
+//         // Assert
+//         result.Should().NotBeNull();
+//         result.ActionName.Should().NotBeNull();
+//         result.ActionName.Should().Be(nameof(rentControllerResult.Rent));
+//     }
 }

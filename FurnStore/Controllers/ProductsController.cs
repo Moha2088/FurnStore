@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FurnStore.Data;
+using FurnStore.Interfaces;
 using FurnStore.Models;
 using Microsoft.AspNetCore.Authorization;
 using ScottPlot;
@@ -8,17 +9,15 @@ using ScottPlot;
 namespace FurnStore.Controllers
 {
     [Authorize(Roles = "Administrator")]
-    public class ProductsController : Controller
+    public class ProductsController : Controller, IProduct
     {
         private readonly FurnStoreContext _context;
 
         private readonly ILogger<ProductsController> _logger;
 
-        public ProductsController(FurnStoreContext context, ILogger<ProductsController> logger)
-        {
-            _context = context;
-            _logger = logger;
-        }
+        public ProductsController(FurnStoreContext context, ILogger<ProductsController> logger) => 
+            (_context, _logger) = (context, logger);
+   
 
         // GET: Products
         public async Task<IActionResult> Index()
@@ -32,6 +31,9 @@ namespace FurnStore.Controllers
 
         public async Task<IActionResult> Dashboard()
         {
+
+            _logger.LogInformation("New Constructor is working!");
+
             var users = await _context.Users
                 .ToListAsync();
 
@@ -54,7 +56,7 @@ namespace FurnStore.Controllers
                 .OrderByDescending(x => x.Count())
                 .First()
                 .Key;
-           
+
 
             _logger.LogInformation($"The value of the mosFreqMaterial is: {mosFreqMaterial} Least freq: {leastFreqMaterial}");
 
@@ -220,5 +222,11 @@ namespace FurnStore.Controllers
         {
             return (_context.Product?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+        // public async Task<IActionResult>LuxuryGet()
+        // {
+        //
+        //     return;
+        // }
     }
 }

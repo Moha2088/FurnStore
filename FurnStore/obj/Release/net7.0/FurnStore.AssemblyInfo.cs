@@ -16,7 +16,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FurnStore")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d68be5f0484c26b79dae471fdb9345f7a4d3dc60")]
 [assembly: System.Reflection.AssemblyProductAttribute("FurnStore")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FurnStore")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

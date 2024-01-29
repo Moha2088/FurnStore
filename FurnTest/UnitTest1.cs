@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Moq;
+using Castle.Core.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace FurnStore;
 
@@ -29,7 +32,8 @@ public class UnitTest1 : TestBase
     {
         // Arrange
         using var context = GetContext();
-        var controllerResult = new RentController(context);
+        var loggerResult = new Mock<ILogger<RentController>>();
+        var controllerResult = new RentController(context, loggerResult.Object);
 
         // Act
         var result = await controllerResult.Index();
@@ -52,17 +56,17 @@ public class UnitTest1 : TestBase
     //     result.ActionName.Should().Be(nameof(controllerResult.RentedProducts));
     // }
 
-    // [TestMethod]
-    // public async Task RentedProducts_Should_Return_View_WithRentedProducts()
-    // {
-    //     // Arrange
-    //     var context = GetContext();
-    //     var controllerResult = new RentController(context);
-    //     // Act
-    //     var result = (ViewResult) await controllerResult.RentedProducts();
-    //
-    //     // Assert
-    //     result.Should().BeOfType<ViewResult>().Which.ContentType.Should().BeOfType<List<Product>>();
-    //
-    // }
+    [TestMethod]
+    public async Task RentedProducts_Should_Return_View_WithRentedProducts()
+    {
+        // Arrange
+        var context = GetContext();
+        var logger = new Mock<ILogger<RentController>>().Object;
+        var controllerResult = new RentController(context,logger);
+        // Act
+        var result = (ViewResult) await controllerResult.RentedProducts();
+    
+        // Assert
+        result.Should().BeOfType<ViewResult>().Which.ContentType.Should().BeOfType<List<Product>>();
+    }
 }
