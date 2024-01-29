@@ -7,18 +7,20 @@ using Microsoft.EntityFrameworkCore;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
-using QuestPDF.Previewer;
+using Microsoft.Extensions.Logging;
+using System.ComponentModel;
+using FurnStore.Interfaces;
 
 namespace FurnStore.Controllers
 {
-    public class RentController : Controller
+    public class RentController : Controller, IRent
     {
         private readonly FurnStoreContext _context;
 
-        public RentController(FurnStoreContext context)
-        {
-            _context = context;
-        }
+        private readonly ILogger<RentController> _logger;
+
+        public RentController(FurnStoreContext context, ILogger<RentController> logger) =>
+            (_context, _logger) = (context, logger);
 
         public async Task<IActionResult> Index()
         {
@@ -87,13 +89,8 @@ namespace FurnStore.Controllers
 
         public async Task<IActionResult> RentedProducts()
         {
-            string? userid = User.Identity.IsAuthenticated ? User.FindFirst(ClaimTypes.NameIdentifier)?.Value : null;
-
-            var product = await _context.Product
-                .Where(p => p.Rentee == userid)
-                .AsNoTracking()
-                .ToListAsync();
-
+            var product = await GetProducts();
+            
             var priceSum = product
                 .Select(p => p.Price)
                 .Sum();
@@ -105,6 +102,7 @@ namespace FurnStore.Controllers
 
             var totalPrice = shippingPrice + priceSum;
 
+
             ViewData["PriceSum"] = priceSum;
             ViewData["ProductCount"] = product.Count();
             ViewData["ShippingPrice"] = shippingPrice;
@@ -112,14 +110,32 @@ namespace FurnStore.Controllers
             return View(product);
         }
 
+        public async Task<List<Product>> GetProducts()
+        {
+            string? userId = null;
+
+            if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                var claim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+                if (claim != null)
+                {
+                    userId = claim.Value;
+                }
+            }
+
+            var product = await _context.Product
+                .Where(p => p.Rentee == userId)
+                .AsNoTracking()
+                .ToListAsync();
+
+            return product;
+        }
+
         [HttpPost]
         public async Task<IActionResult> ClearList()
         {
-            string userid = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-            var productsToRemove = await _context.Product
-                .Where(p => p.Rentee == userid)
-                .ToListAsync();
+           var productsToRemove = await GetProducts();
 
             if (productsToRemove is not null)
             {
@@ -136,6 +152,9 @@ namespace FurnStore.Controllers
 
         public async Task<IActionResult> GenPdf()
         {
+             var product = await GetProducts();
+
+
             var document = Document.Create(container =>
             {
                 container.Page(page =>
@@ -166,13 +185,24 @@ namespace FurnStore.Controllers
                                 .FontSize(14);
 
 
-                            x.Item()
-                                .Text("Product 1 : Chair") // Placeholder
-                                .Bold();
+                            if (product.Any())
+                            {
+                                int count = 1;
 
-                            x.Item()
-                                .Text("Product 2 : Table") // Placeholder
-                                .Bold();
+                                foreach (var item in product)
+                                {
+                                    x.Item()
+                                    .Text($"{count} - Name: {item.Name} Price {item.Price}");
+                                    count++;
+                                }
+                            }
+
+                            else
+                            {
+                                x.Item()
+                                .Text("You have no products in your order list");
+                            }
+
                         });
 
                     page.Footer()
@@ -184,9 +214,9 @@ namespace FurnStore.Controllers
                         });
                 });
             });
-            
+
             document.GeneratePdfAndShow();
-            
+
             return RedirectToAction(nameof(RentedProducts));
         }
     }

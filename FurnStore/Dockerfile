@@ -8,9 +8,9 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["FurnStore.csproj", "."]
-RUN dotnet restore "./FurnStore.csproj"
+RUN dotnet restore "FurnStore.csproj"
 COPY . .
-WORKDIR "/src/."
+WORKDIR "/src"
 RUN dotnet build "FurnStore.csproj" -c Release -o /app/build
 
 FROM build AS publish
