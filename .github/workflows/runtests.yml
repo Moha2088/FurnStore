@@ -9,6 +9,9 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  FOLDER_NAME: FurnStore
+
 jobs:
   build:
 
@@ -21,8 +24,8 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Restore dependencies
-      run: cd FurnStore && dotnet restore
+      run: cd $FOLDER_NAME && dotnet restore
     - name: Build
-      run: cd FurnStore && dotnet build --no-restore
+      run: cd $FOLDER_NAME && dotnet build --no-restore
     - name: Test
-      run: cd FurnStore && dotnet test --no-build --verbosity normal
+      run: cd $FOLDER_NAME && dotnet test --no-build --verbosity normal
