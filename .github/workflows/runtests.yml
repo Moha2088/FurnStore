@@ -10,7 +10,7 @@ on:
     branches: [ "main" ]
 
 env:
-  FOLDER_NAME: FurnStore
+  FOLDER_NAME: FurnTest
 
 jobs:
   build:
