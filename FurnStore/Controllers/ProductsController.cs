@@ -14,26 +14,23 @@ namespace FurnStore.Controllers
         private readonly FurnStoreContext _context;
 
         private readonly ILogger<ProductsController> _logger;
-
-        public ProductsController(FurnStoreContext context, ILogger<ProductsController> logger) => 
+    
+        public ProductsController(FurnStoreContext context, ILogger<ProductsController> logger) =>
             (_context, _logger) = (context, logger);
-   
+
 
         // GET: Products
         public async Task<IActionResult> Index()
         {
             ViewData["ProductCount"] = _context.Product.Count();
 
-            return _context.Product != null ?
-                        View(await _context.Product.ToListAsync()) :
-                        Problem("Entity set 'FurnStoreContext.Product'  is null.");
+            return _context.Product != null
+                ? View(await _context.Product.ToListAsync())
+                : Problem("Entity set 'FurnStoreContext.Product'  is null.");
         }
 
         public async Task<IActionResult> Dashboard()
         {
-
-            _logger.LogInformation("New Constructor is working!");
-
             var users = await _context.Users
                 .ToListAsync();
 
@@ -41,52 +38,57 @@ namespace FurnStore.Controllers
                 .Where(x => x.Rentee != null)
                 .ToListAsync();
 
-            var leastFreqMaterial = rented
-                .Select(x => x.Material)
-                .ToList()
-                .GroupBy(x => x.ToString())
-                .OrderBy(x => x.Count())
-                .First()
-                .Key;
-
-            var mosFreqMaterial = rented
-                .Select(x => x.Material)
-                .ToList()
-                .GroupBy(material => material.ToString())
-                .OrderByDescending(x => x.Count())
-                .First()
-                .Key;
-
-
-            _logger.LogInformation($"The value of the mosFreqMaterial is: {mosFreqMaterial} Least freq: {leastFreqMaterial}");
-
-            decimal totalSum = 0;
-            rented.ForEach(x => totalSum += x.Price);
-
-            var rentedCount = Convert.ToDouble(rented.Count());
-            var totalCount = Convert.ToDouble(_context.Product.Count());
-            var rentedPct = rentedCount / totalCount * 100;
-
-            var barPlot = new Plot();
-            double[] values = { rentedCount, totalCount };
-            barPlot.Add.Bars(values);
-            barPlot.Axes.Margins(bottom: 0);
-
-            Tick[] states =
+            if (rented.Any())
             {
-                new (0,"Rented"),
-                new (1, "Total"),
-            };
+                var leastFreqMaterial = rented
+                    .Select(x => x.Material)
+                    .ToList()
+                    .GroupBy(x => x.ToString())
+                    .OrderBy(x => x.Count())
+                    .First()
+                    .Key;
 
-            barPlot.Axes.Bottom.TickGenerator = new ScottPlot.TickGenerators.NumericManual(states);
-            barPlot.Axes.Bottom.MajorTickStyle.Length = 0;
-            barPlot.SavePng("wwwroot/Images/BarPlot.png", 400, 300);
+                var mosFreqMaterial = rented
+                    .Select(x => x.Material)
+                    .ToList()
+                    .GroupBy(material => material.ToString())
+                    .OrderByDescending(x => x.Count())
+                    .First()
+                    .Key;
 
-            ViewData["RentedPct"] = $"{Math.Round(rentedPct)}%";
-            ViewData["TotalSum"] = $"{totalSum} .kr";
-            ViewData["MostPopularMat"] = mosFreqMaterial;
-            ViewData["LeastPopularMat"] = leastFreqMaterial;
-            ViewData["RentedItemsCount"] = rented.Count;
+
+                _logger.LogInformation(
+                    $"The value of the mosFreqMaterial is: {mosFreqMaterial} Least freq: {leastFreqMaterial}");
+
+                decimal totalSum = 0;
+                rented.ForEach(x => totalSum += x.Price);
+
+                var rentedCount = Convert.ToDouble(rented.Count());
+                var totalCount = Convert.ToDouble(_context.Product.Count());
+                var rentedPct = rentedCount / totalCount * 100;
+
+                var barPlot = new Plot();
+                double[] values = { rentedCount, totalCount };
+                barPlot.Add.Bars(values);
+                barPlot.Axes.Margins(bottom: 0);
+
+                Tick[] states =
+                {
+                    new(0, "Rented"),
+                    new(1, "Total"),
+                };
+
+                barPlot.Axes.Bottom.TickGenerator = new ScottPlot.TickGenerators.NumericManual(states);
+                barPlot.Axes.Bottom.MajorTickStyle.Length = 0;
+                barPlot.SavePng("wwwroot/Images/BarPlot.png", 400, 300);
+
+                ViewData["RentedPct"] = $"{Math.Round(rentedPct)}%";
+                ViewData["TotalSum"] = $"{totalSum} .kr";
+                ViewData["MostPopularMat"] = mosFreqMaterial;
+                ViewData["LeastPopularMat"] = leastFreqMaterial;
+                ViewData["RentedItemsCount"] = rented.Count;
+            }
+
             return View(users);
         }
 
@@ -119,7 +121,8 @@ namespace FurnStore.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Material,Price,ShippingPrice,ImageUrl")] Product product)
+        public async Task<IActionResult> Create(
+            [Bind("Id,Name,Description,Material,Price,ShippingPrice,ImageUrl")] Product product)
         {
             if (ModelState.IsValid)
             {
@@ -127,6 +130,7 @@ namespace FurnStore.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(product);
         }
 
@@ -143,6 +147,7 @@ namespace FurnStore.Controllers
             {
                 return NotFound();
             }
+
             return View(product);
         }
 
@@ -176,8 +181,10 @@ namespace FurnStore.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(product);
         }
 
@@ -208,6 +215,7 @@ namespace FurnStore.Controllers
             {
                 return Problem("Entity set 'FurnStoreContext.Product'  is null.");
             }
+
             var product = await _context.Product.FindAsync(id);
             if (product != null)
             {

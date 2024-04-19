@@ -23,7 +23,7 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult NotFound() 
+    public IActionResult NotFound()
     {
         return View();
     }

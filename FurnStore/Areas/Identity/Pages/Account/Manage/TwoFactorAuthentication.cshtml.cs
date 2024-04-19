@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
+
 #nullable disable
 
 using System;
@@ -18,7 +19,8 @@ namespace FurnStore.Areas.Identity.Pages.Account.Manage
         private readonly ILogger<TwoFactorAuthenticationModel> _logger;
 
         public TwoFactorAuthenticationModel(
-            UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, ILogger<TwoFactorAuthenticationModel> logger)
+            UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager,
+            ILogger<TwoFactorAuthenticationModel> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -82,7 +84,8 @@ namespace FurnStore.Areas.Identity.Pages.Account.Manage
             }
 
             await _signInManager.ForgetTwoFactorClientAsync();
-            StatusMessage = "The current browser has been forgotten. When you login again from this browser you will be prompted for your 2fa code.";
+            StatusMessage =
+                "The current browser has been forgotten. When you login again from this browser you will be prompted for your 2fa code.";
             return RedirectToPage();
         }
     }

@@ -11,11 +11,9 @@ namespace FurnStore.Data
 {
     public class FurnStoreContext : IdentityDbContext<IdentityUser>
     {
-        
-        public FurnStoreContext (DbContextOptions<FurnStoreContext> options)
+        public FurnStoreContext(DbContextOptions<FurnStoreContext> options)
             : base(options)
         {
-            
         }
 
         public DbSet<FurnStore.Models.Product> Product { get; set; } = default!;
