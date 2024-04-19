@@ -223,6 +223,6 @@ public class RentController : Controller, IRent
 
     public async Task LuxuryGet()
     {
-
+        
     }
 }
