@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
+
 #nullable disable
 
 using System;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+
 namespace FurnStore.Areas.Identity.Pages.Account
 {
     public class LoginWithRecoveryCodeModel : PageModel
@@ -96,6 +98,7 @@ namespace FurnStore.Areas.Identity.Pages.Account
                 _logger.LogInformation("User with ID '{UserId}' logged in with a recovery code.", user.Id);
                 return LocalRedirect(returnUrl ?? Url.Content("~/"));
             }
+
             if (result.IsLockedOut)
             {
                 _logger.LogWarning("User account locked out.");

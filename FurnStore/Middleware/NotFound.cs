@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
 namespace FurnStore.Middleware;
+
 // You may need to install the Microsoft.AspNetCore.Http.Abstractions package into your project
 public class NotFound
 {
@@ -15,7 +16,7 @@ public class NotFound
 
     public async Task<Task> Invoke(HttpContext httpContext)
     {
-        if(httpContext.Response.StatusCode == 404)
+        if (httpContext.Response.StatusCode == 404)
         {
             await httpContext.Response.WriteAsync("Page not found");
         }

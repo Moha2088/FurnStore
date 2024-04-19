@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
+
 #nullable disable
 
 using System;
@@ -105,7 +106,9 @@ namespace FurnStore.Areas.Identity.Pages.Account.Manage
 
             // Request a redirect to the external login provider to link a login for the current user
             var redirectUrl = Url.Page("./ExternalLogins", pageHandler: "LinkLoginCallback");
-            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl, _userManager.GetUserId(User));
+            var properties =
+                _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl,
+                    _userManager.GetUserId(User));
             return new ChallengeResult(provider, properties);
         }
 
@@ -127,7 +130,8 @@ namespace FurnStore.Areas.Identity.Pages.Account.Manage
             var result = await _userManager.AddLoginAsync(user, info);
             if (!result.Succeeded)
             {
-                StatusMessage = "The external login was not added. External logins can only be associated with one account.";
+                StatusMessage =
+                    "The external login was not added. External logins can only be associated with one account.";
                 return RedirectToPage();
             }
 

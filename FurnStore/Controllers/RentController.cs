@@ -11,213 +11,218 @@ using Microsoft.Extensions.Logging;
 using System.ComponentModel;
 using FurnStore.Interfaces;
 
-namespace FurnStore.Controllers
+namespace FurnStore.Controllers;
+
+public class RentController : Controller, IRent
 {
-    public class RentController : Controller, IRent
+    private readonly FurnStoreContext _context;
+
+    private readonly ILogger<RentController> _logger;
+
+    public RentController(FurnStoreContext context, ILogger<RentController> logger) =>
+        (_context, _logger) = (context, logger);
+
+    public async Task<IActionResult> Index()
     {
-        private readonly FurnStoreContext _context;
+        var product = await _context.Product
+            .Where(p => p.Rentee == null)
+            .AsNoTracking()
+            .ToListAsync();
 
-        private readonly ILogger<RentController> _logger;
+        ViewData["ProductCount"] = product.Count();
 
-        public RentController(FurnStoreContext context, ILogger<RentController> logger) =>
-            (_context, _logger) = (context, logger);
+        return View(product);
+    }
 
-        public async Task<IActionResult> Index()
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Rent(int? id)
+    {
+        if (id == null)
         {
-            var product = await _context.Product
-                .Where(p => p.Rentee == null)
-                .AsNoTracking()
-                .ToListAsync();
-
-            ViewData["ProductCount"] = product.Count();
-
-            return View(product);
+            return NotFound();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Rent(int? id)
+        var product = _context.Product.FirstOrDefault(p => p.Id == id);
+
+        if (product == null)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            return NotFound();
+        }
 
-            var product = _context.Product.FirstOrDefault(p => p.Id == id);
+        string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        string userEmail = User.FindFirst(ClaimTypes.Name).Value;
 
-            if (product == null)
-            {
-                return NotFound();
-            }
+        product.Rentee = userId;
+        product.RenteeEmail = userEmail;
+        await _context.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
+    }
 
-            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            string userEmail = User.FindFirst(ClaimTypes.Name).Value;
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CancelRent(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
 
-            product.Rentee = userId;
-            product.RenteeEmail = userEmail;
+        var product = await _context.Product.FirstOrDefaultAsync(p => p.Id == id);
+
+        if (product == null)
+        {
+            return NotFound();
+        }
+
+        string userid = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+        if (product.Rentee == userid)
+        {
+            product.Rentee = null;
+            product.RenteeEmail = null;
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CancelRent(int? id)
+        return RedirectToAction(nameof(RentedProducts));
+    }
+
+    public async Task<IActionResult> RentedProducts()
+    {
+        var product = await GetProducts();
+
+        var priceSum = product
+            .Select(p => p.Price)
+            .Sum();
+
+        var shippingPrice = product
+            .Select(p => p.ShippingPrice)
+            .Distinct()
+            .Sum();
+
+        var totalPrice = shippingPrice + priceSum;
+
+
+        ViewData["PriceSum"] = priceSum;
+        ViewData["ProductCount"] = product.Count();
+        ViewData["ShippingPrice"] = shippingPrice;
+        ViewData["TotalPrice"] = totalPrice;
+        return View(product);
+    }
+
+    public string? GetUserId()
+    {
+        string? userId = null;
+
+        if (User.Identity is { IsAuthenticated: true })
         {
-            if (id == null)
+            var claim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (claim != null)
             {
-                return NotFound();
+                userId = claim.Value;
             }
-
-            var product = await _context.Product.FirstOrDefaultAsync(p => p.Id == id);
-
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            string userid = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-            if (product.Rentee == userid)
-            {
-                product.Rentee = null;
-                product.RenteeEmail = null;
-                await _context.SaveChangesAsync();
-            }
-
-            return RedirectToAction(nameof(RentedProducts));
         }
 
-        public async Task<IActionResult> RentedProducts()
+        return userId;
+    }
+
+    public async Task<List<Product>> GetProducts()
+    {
+        var userId = GetUserId();
+        var product = await _context.Product
+            .Where(p => p.Rentee == userId)
+            .ToListAsync();
+
+        return product;
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ClearList()
+    {
+        var productsToRemove = await GetProducts();
+        productsToRemove.ForEach(product => product.Rentee = null);
+        await _context.SaveChangesAsync();
+        
+        return RedirectToAction(nameof(RentedProducts));
+    }
+
+    public async Task<IActionResult> GenPdf()
+    {
+        var product = await GetProducts();
+
+        var document = Document.Create(container =>
         {
-            var product = await GetProducts();
-            
-            var priceSum = product
-                .Select(p => p.Price)
-                .Sum();
-
-            var shippingPrice = product
-                .Select(p => p.ShippingPrice)
-                .Distinct()
-                .Sum();
-
-            var totalPrice = shippingPrice + priceSum;
-
-
-            ViewData["PriceSum"] = priceSum;
-            ViewData["ProductCount"] = product.Count();
-            ViewData["ShippingPrice"] = shippingPrice;
-            ViewData["TotalPrice"] = totalPrice;
-            return View(product);
-        }
-
-        public async Task<List<Product>> GetProducts()
-        {
-            string? userId = null;
-
-            if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
+            container.Page(page =>
             {
-                var claim = User.FindFirst(ClaimTypes.NameIdentifier);
+                page.Size(PageSizes.A4);
+                page.Margin(2, Unit.Centimetre);
+                page.PageColor(Colors.White);
+                page.DefaultTextStyle(x => x.FontSize(12));
 
-                if (claim != null)
-                {
-                    userId = claim.Value;
-                }
-            }
+                page.Header()
+                    .AlignLeft()
+                    .Width(PageSizes.A10.Width)
+                    .Image("wwwroot/Images/FurnLogo.png");
 
-            var product = await _context.Product
-                .Where(p => p.Rentee == userId)
-                .AsNoTracking()
-                .ToListAsync();
+                page.Content()
+                    .PaddingVertical(1, Unit.Centimetre)
+                    .Column(x =>
+                    {
+                        x.Spacing(40);
 
-            return product;
-        }
+                        x.Item().Text($"Order Summary/Confirmation #{DateTime.Now}")
+                            .SemiBold()
+                            .FontSize(22)
+                            .FontColor(Colors.Black);
 
-        [HttpPost]
-        public async Task<IActionResult> ClearList()
-        {
-           var productsToRemove = await GetProducts();
-
-            if (productsToRemove is not null)
-            {
-                foreach (var product in productsToRemove)
-                {
-                    product.Rentee = null;
-                    await _context.SaveChangesAsync();
-                }
-            }
-
-            ViewData["ClearedAlert"] = "List has been cleared";
-            return RedirectToAction(nameof(RentedProducts));
-        }
-
-        public async Task<IActionResult> GenPdf()
-        {
-             var product = await GetProducts();
+                        x.Item()
+                            .Text("Thank you for confirming your order. Below is a list of your ordered products:")
+                            .FontSize(14);
 
 
-            var document = Document.Create(container =>
-            {
-                container.Page(page =>
-                {
-                    page.Size(PageSizes.A4);
-                    page.Margin(2, Unit.Centimetre);
-                    page.PageColor(Colors.White);
-                    page.DefaultTextStyle(x => x.FontSize(12));
-
-                    page.Header()
-                        .AlignLeft()
-                        .Width(PageSizes.A10.Width)
-                        .Image("wwwroot/Images/FurnLogo.png");
-
-                    page.Content()
-                        .PaddingVertical(1, Unit.Centimetre)
-                        .Column(x =>
+                        if (product.Any())
                         {
-                            x.Spacing(40);
+                            int count = 1;
 
-                            x.Item().Text($"Order Summary/Confirmation #{DateTime.Now}")
-                                .SemiBold()
-                                .FontSize(22)
-                                .FontColor(Colors.Black);
-
-                            x.Item()
-                                .Text("Thank you for confirming your order. Below is a list of your ordered products:")
-                                .FontSize(14);
-
-
-                            if (product.Any())
-                            {
-                                int count = 1;
-
-                                foreach (var item in product)
-                                {
-                                    x.Item()
-                                    .Text($"{count} - Name: {item.Name} Price {item.Price}");
-                                    count++;
-                                }
-                            }
-
-                            else
+                            foreach (var item in product)
                             {
                                 x.Item()
-                                .Text("You have no products in your order list");
+                                    .Text($"{count} - Name: {item.Name} Price {item.Price}");
+                                count++;
                             }
 
-                        });
+                            var sum = product
+                                .Select(x => x.Price)
+                                .Sum();
 
-                    page.Footer()
-                        .AlignCenter()
-                        .Text(x =>
+                            sum += product[0].ShippingPrice;
+                            x.Item().Text($"Total: {sum}");
+                        }
+
+                        else
                         {
-                            x.Span($"Page ");
-                            x.CurrentPageNumber();
-                        });
-                });
+                            x.Item()
+                                .Text("You have no products in your order list");
+                        }
+                    });
+
+                page.Footer()
+                    .AlignCenter()
+                    .Text(x =>
+                    {
+                        x.Span($"Page ");
+                        x.CurrentPageNumber();
+                    });
             });
+        });
 
-            document.GeneratePdfAndShow();
+        document.GeneratePdfAndShow();
 
-            return RedirectToAction(nameof(RentedProducts));
-        }
+        return RedirectToAction(nameof(RentedProducts));
+    }
+
+    public async Task LuxuryGet()
+    {
+
     }
 }

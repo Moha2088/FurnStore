@@ -12,50 +12,49 @@
     <p style="margin-bottom: 10%;">Products: @ViewData["ProductCount"]</p>
 
 
-<table class="table table-borderless table-hover">
-    <thead>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(item => item.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(item => item.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(item => item.Material)
-        </th>
-        <th>
-            @Html.DisplayNameFor(item => item.Price)
-        </th>
-    </tr>
-    </thead>
-    <tbody>
+    <table class="table table-borderless table-hover">
+        <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(item => item.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(item => item.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(item => item.Material)
+            </th>
+            <th>
+                @Html.DisplayNameFor(item => item.Price)
+            </th>
+        </tr>
+        </thead>
+        <tbody>
 
-    @if (Model != null)
-    {
-        foreach (var item in Model)
+        @if (Model != null)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Material)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    <p>Log in to rent this product</p>
-                </td>
-            </tr>
-            
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Material)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        <p>Log in to rent this product</p>
+                    </td>
+                </tr>
+            }
         }
-    }
-    
-    </tbody>
-</table>
+
+        </tbody>
+    </table>
 </div>

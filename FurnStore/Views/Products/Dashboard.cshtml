@@ -12,21 +12,21 @@
 
     <table class="table table-hover table-borderless" style="margin-left: auto; margin-right: auto;">
         <thead>
-            <tr>
-                <th>Email</th>
-            </tr>
+        <tr>
+            <th>Email</th>
+        </tr>
         </thead>
         <tbody>
 
-            @if (Model != null)
+        @if (Model != null)
+        {
+            foreach (var user in Model)
             {
-                foreach (var user in Model)
-                {
-                    <tr>
-                        <td>@user.Email</td>
-                    </tr>
-                }
+                <tr>
+                    <td>@user.Email</td>
+                </tr>
             }
+        }
 
         </tbody>
     </table>
@@ -84,6 +84,6 @@
     {
         <p>To watch the statistics, a minimum of 5 products must be rented</p>
     }
-    
-   
+
+
 </div>

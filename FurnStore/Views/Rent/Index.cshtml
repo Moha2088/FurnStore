@@ -10,7 +10,8 @@
 
     @if (!Model.Any())
     {
-        <p style="margin-bottom:10% ;">No products available for renting at the moment. Products will be restocked shortly!
+        <p style="margin-bottom:10% ;">
+            No products available for renting at the moment. Products will be restocked shortly!
         </p>
     }
 
@@ -83,7 +84,7 @@
                     }
 
                     <td>
-                        <img style="width: 400px; margin-left: 100px;" src=@Html.DisplayFor(modelItem => item.ImageUrl) />
+                        <img style="width: 400px; margin-left: 100px;" src=@Html.DisplayFor(modelItem => item.ImageUrl)/>
                     </td>
                 </tr>
             }
@@ -92,11 +93,11 @@
         </tbody>
 
     </table>
-    
+
     <script>
     const totop = () => window.scrollTo(0,0)
     </script>
-    
+
     <button class="btn btn-outline-dark" onclick="totop()">
         Back to top
     </button>

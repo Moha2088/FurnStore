@@ -62,10 +62,10 @@ public class UnitTest1 : TestBase
         // Arrange
         var context = GetContext();
         var logger = new Mock<ILogger<RentController>>().Object;
-        var controllerResult = new RentController(context,logger);
+        var controllerResult = new RentController(context, logger);
         // Act
-        var result = (ViewResult) await controllerResult.RentedProducts();
-    
+        var result = (ViewResult)await controllerResult.RentedProducts();
+
         // Assert
         // result.Should().BeOfType<ViewResult>().Which.ContentType.Should().BeOfType<List<Product>>();
         result.Should().BeOfType<ViewResult>();

@@ -13,7 +13,9 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
         builder.Services.AddDbContext<FurnStoreContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("FurnStoreContext") ?? throw new InvalidOperationException("Connection string 'FurnStoreContext' not found.")));
+            options.UseSqlServer(builder.Configuration.GetConnectionString("FurnStoreContext") ??
+                                 throw new InvalidOperationException(
+                                     "Connection string 'FurnStoreContext' not found.")));
 
         builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             .AddRoles<IdentityRole>().AddEntityFrameworkStores<FurnStoreContext>();
@@ -21,9 +23,9 @@ public class Program
         // Add services to the container.
         builder.Services.AddControllersWithViews();
         QuestPDF.Settings.License = LicenseType.Community;
-        
+
         var app = builder.Build();
-    
+
         using (var scope = app.Services.CreateScope())
         {
             var services = scope.ServiceProvider;
@@ -48,8 +50,7 @@ public class Program
 
         app.UseAuthentication();
         app.UseAuthorization();
-       
-        
+
 
         app.MapControllerRoute(
             name: "default",
